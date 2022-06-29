@@ -1,42 +1,41 @@
 import { dbank } from "../../declarations/dbank";
 
-window.addEventListener("load", async () => {
-	const currentAmount = await dbank.checkBalance();
-	document.getElementById("value").innerHTML =
-		Math.round(currentAmount * 100) / 100;
+window.addEventListener("load", async function() {
+  // console.log("Finished loading");
+  update();
 });
 
-document.querySelector("form").addEventListener("submit", async (e) => {
-	e.preventDefault();
-	const balanceAmount = await dbank.checkBalance();
-	const button = e.target.querySelector("#submit-btn");
+document.querySelector("form").addEventListener("submit", async function(event) {
+  event.preventDefault();
+  // console.log("Submitted.");
 
-	const inputAmount = parseFloat(document.getElementById("input-amount").value);
+  const button = event.target.querySelector("#submit-btn");
 
-	const outputAmount = parseFloat(
-		document.getElementById("withdrawal-amount").value
-	);
+  const inputAmount = parseFloat(document.getElementById("input-amount").value);
+  const outputAmount = parseFloat(document.getElementById("withdrawal-amount").value);
 
-	button.setAttribute("disabled", true);
+  button.setAttribute("disabled", true);
 
-	if (document.getElementById("input-amount").value.length != 0) {
-		await dbank.topUp(inputAmount);
-	}
+  if (document.getElementById("input-amount").value.length != 0) {
+    await dbank.topUp(inputAmount);
+  }
 
-	if (document.getElementById("withdrawal-amount").value.length != 0) {
-		await dbank.withdraw(outputAmount);
-	}
+  if (document.getElementById("withdrawal-amount").value.length != 0) {
+    await dbank.withdraw(outputAmount);
+  }
 
-	await dbank.compound();
+  await dbank.compound();
 
-	await update();
+  update()
 
-	document.getElementById("input-amount").value = "";
-	button.removeAttribute("disabled");
+  document.getElementById("input-amount").value = "";
+  document.getElementById("withdrawal-amount").value = "";
+
+  button.removeAttribute("disabled");
+
 });
 
 async function update() {
-	const currentAmount = await dbank.checkBalance();
-	document.getElementById("value").innerHTML =
-		Math.round(currentAmount * 100) / 100;
-}
+  const currentAmount = await dbank.checkBalance();
+  document.getElementById("value").innerText = Math.round(currentAmount * 100) / 100;
+};
