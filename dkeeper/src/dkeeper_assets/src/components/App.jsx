@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
@@ -8,10 +8,18 @@ import { dkeeper } from "../../../declarations/dkeeper";
 function App() {
 	const [notes, setNotes] = useState([]);
 
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	async function fetchData() {
+		const notesArray = await dkeeper.readNotes();
+		setNotes(notesArray);
+	}
 	function addNote(newNote) {
 		setNotes((prevNotes) => {
 			dkeeper.createNote(newNote.title, newNote.content);
-			return [...prevNotes, newNote];
+			return [newNote, ...prevNotes];
 		});
 	}
 
