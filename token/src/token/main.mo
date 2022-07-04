@@ -12,11 +12,16 @@ actor TOken {
     balances.put(owner,totalSupply);
 
     //get balance of owner
-    public query func getbalnce (who:Principal):async Nat {
+    public query func getbalance (who:Principal):async Nat {
        let balance : Nat = switch (balances.get(who)) {
           case null 0 ; 
           case (?result) result;
         };
         return balance;
+    };
+
+
+    public query func getSymbol ():async Text {
+        return symbol;
     }
 }
