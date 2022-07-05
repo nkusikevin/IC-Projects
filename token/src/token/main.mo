@@ -13,7 +13,7 @@ actor TOken {
     private var balances = HashMap.HashMap<Principal,Nat>(1,Principal.equal,Principal.hash);
 
    
-if(balances.size() < 1){
+    if(balances.size() < 1){
              balances.put(owner,totalSupply);
         };
      
