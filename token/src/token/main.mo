@@ -33,5 +33,22 @@ actor TOken {
         }else{
         return "Already Claimed";
         }
+    };
+
+    public shared(msg) func transfer(to:Principal,amount:Nat): async Text{
+
+        let fromBalace = await getbalance(msg.caller);
+        if(fromBalace < amount){
+            return "Insufficient Funds";
+        }else{
+            let newFromBalance : Nat = fromBalace - amount;
+            balances.put(msg.caller,newFromBalance);
+
+            let toBalance = await getbalance(to);
+            let newToBalance : Nat = toBalance + amount;
+            balances.put(to,newToBalance);
+
+            return "Success";
+        }
     }
 }
