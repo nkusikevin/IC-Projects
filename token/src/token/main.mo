@@ -1,5 +1,6 @@
 import Principal "mo:base/Principal";
 import HashMap "mo:base/HashMap";
+import Debug "mo:base/Debug";
 
 actor TOken {
     var owner:Principal = Principal.fromText("ks7zb-yewds-u5lw4-iergl-3mghk-g2ddp-cawaf-h37vs-dsiql-qkyaw-lae");
