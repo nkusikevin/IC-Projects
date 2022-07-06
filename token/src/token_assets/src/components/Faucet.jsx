@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { token, canisterId, createActor } from "../../../declarations/token";
 import { AuthClient } from "@dfinity/auth-client";
 
-function Faucet() {
+function Faucet({ user }) {
 	const [res, setRes] = useState("");
 	const [isDisable, setIsDisable] = useState(false);
 	async function handleClick(event) {
@@ -33,6 +33,7 @@ function Faucet() {
 			<label>
 				Get your free DANK tokens here! Claim 10,000 DANK coins to your account.
 			</label>
+			<label>{user}</label>
 			<p className='trade-buttons'>
 				<button id='btn-payout' onClick={handleClick} disabled={isDisable}>
 					{res ? res : "	Gimme gimme"}
