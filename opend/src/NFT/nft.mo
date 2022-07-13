@@ -22,4 +22,8 @@ public query func getAsset(): async [Nat8]{
     return imageBytes;
 };
 
+public query func getCanisterId() : async Principal{
+    return Principal.fromActor(this)
+}
+
 };
