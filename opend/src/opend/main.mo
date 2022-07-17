@@ -2,11 +2,14 @@ import Cycles "mo:base/ExperimentalCycles";
 import Debug "mo:base/Debug";
 import NFTActorClass "../NFT/nft";
 import Principal "mo:base/Principal";
+import HashMap "mo:base/HashMap";
+import List "mo:base/List";
 
 
 actor OpenD {
   
-
+var mapOfNFTs = HashMap.HashMap<Principal,NFTActorClass.NFT>(1,Principal.equal, Principal.hash);
+var mapOfOwners = HashMap.HashMap<Principal,List.List<Principal>>(1,Principal.equal, Principal.hash);
 
 public shared(msg) func mint (imgData:[Nat8],name:Text) : async Principal{
 
@@ -20,12 +23,27 @@ let newNFT = await NFTActorClass.NFT(name,owner,imgData);
 
 Debug.print(debug_show(Cycles.balance()));
 
-let newCFTPrincipal = await newNFT.getCanisterId();
+let newNFTPrincipal = await newNFT.getCanisterId();
 
-return newCFTPrincipal;
+mapOfNFTs.put(newNFTPrincipal,newNFT);
+addToOwnershipMap(owner,newNFTPrincipal);
+
+return newNFTPrincipal;
 
 
-}
+};
+
+private func addToOwnershipMap(owner:Principal, nftId:Principal){
+
+    var ownedNFTS : List.List<Principal> = switch (mapOfOwners.get(owner)){
+        case null List.nil<Principal>();
+        case (?result) result;
+    };
+
+    ownedNFTS := List.push(nftId,ownedNFTS);
+    mapOfOwners.put(owner , ownedNFTS);
+
+};
 
 
 
